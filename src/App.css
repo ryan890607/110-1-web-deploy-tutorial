@@ -237,7 +237,7 @@ h1 {
 }
 
 .searchBar {
-  margin: 0px calc(50%-300px);
+  margin: 0px calc(50%-150px);
   display: flex;
 }
 
