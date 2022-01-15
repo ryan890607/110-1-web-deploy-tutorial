@@ -13,6 +13,7 @@ import { getMainDefinition } from "apollo-utilities";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import "antd/dist/antd.css"
 
 const url = new URL("/graphql", window.location.href);
 
