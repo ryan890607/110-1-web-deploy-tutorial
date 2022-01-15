@@ -9,6 +9,10 @@ import path from "path";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 
+import Comment from "./backend/resolvers/Comment.js"
+import Post from "./backend/resolvers/Post.js"
+import Store from "./backend/resolvers/Store.js"
+import User from "./backend/resolvers/User.js"
 import db from "./backend/db.js";
 import Query from "./backend/resolvers/Query.js";
 import Mutation from "./backend/resolvers/Mutation.js";
@@ -37,6 +41,10 @@ const server = new ApolloServer({
     Query,
     Mutation,
     Subscription,
+    User,
+    Post,
+    Comment,
+    Store
   },
   context: {
     db,

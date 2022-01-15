@@ -9,7 +9,7 @@ import mongo from './mongo';
 require('dotenv-defaults').config();
 const pubsub = new PubSub();
 
-const server = new GraphQLServer({
+// const server = new GraphQLServer({
     typeDefs: './src/schema.graphql',
     resolvers: {
         Query,
