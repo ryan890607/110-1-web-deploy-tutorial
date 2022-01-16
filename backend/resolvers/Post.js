@@ -5,7 +5,6 @@ const Post = {
             const cmt = await db.CommentModel.findById(parent.comments[i]);
             cmts.push(cmt);
         }
-        // console.log(cmts);
         return cmts;
     },
     async store(parent, args, { db }, info){

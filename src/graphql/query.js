@@ -13,6 +13,7 @@ export const USER_QUERY = gql`
                     title
                     body
                     comments{
+                        img
                         sender
                         text
                     }
@@ -29,6 +30,7 @@ export const COMMENTS_QUERY = gql`
     ){
         comments(post: $post_id){
             id
+            img
             text
             sender
             post
@@ -48,6 +50,7 @@ export const POSTS_QUERY = gql`
             comments{
                 sender
                 text
+                img
             }
             store{
                 id
@@ -62,6 +65,7 @@ export const POST_QUERY = gql`
         $post_id: ID!
     ){
         post(postId: $post_id){
+            img
             title
             body
             author
@@ -71,6 +75,7 @@ export const POST_QUERY = gql`
             }
             score
             comments{
+                img
                 sender
                 text
             }

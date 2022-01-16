@@ -11,7 +11,8 @@ const newUser = async (DB, name, password) => {
         biography: '',
         password: password,
         posts: [],
-        favs: []
+        favs: [],
+        image: ''
     });
     await NewUser.save();
     return NewUser;
@@ -19,13 +20,9 @@ const newUser = async (DB, name, password) => {
 
 const Mutation = {
     async createPost(parent, args, { db, pubsub }, info){
-        const { title, body, score, author, store } = args.data;
-        // console.log(store);
+        const { title, body, score, author, store, img } = args.data;
         const Store = await db.StoreModel.findById(store);
-        // console.log(Store);
-        console.log(author);
         const Author = await db.UserModel.findOne({ name: author }); // use author: String? or ID?
-        console.log(Author);
         if(!Store){
             throw new Error('Error: Store cannot find while creating post.');
         }
@@ -43,7 +40,8 @@ const Mutation = {
             author : author,
             comments: [],
             store: { id: store, name: Store.name },
-            score: score
+            score: score,
+            img: img
         });
 
         Store.posts.push(newPost);
@@ -77,7 +75,9 @@ const Mutation = {
         if(!Post){
             throw new Error('Error: Cannot find the post while creating comment.');
         }
+
         const newComment = await db.CommentModel({
+            img: Sender.image,
             text: text,
             sender: Sender.name,
             post: post
@@ -165,7 +165,6 @@ const Mutation = {
     },
 
     async findStoreById(parent, { id }, { db }, info){
-        console.log(id, "==")
         const STR = await db.StoreModel.findById(id);
         if(!STR) return null;
         else return STR;
@@ -200,16 +199,25 @@ const Mutation = {
         }
         return null;
     },
-    // async uploadUserImage(parent, { image, userId }, { db }, info){
-    //     const USR = await db.UserModel.findById(userId);
-    //     if(!USR) {
-    //         throw new Error('Error: cannot find user while uploading images');
-    //     }
-    //     const { createReadStream } = await image;
-
-    //     const readStream = createReadStream();
-
-    // }
+    async uploadUserImage(parent, { image, name }, { db }, info){
+        const USR = await db.UserModel.findOne({ name:  name });
+        const cmts = await db.CommentModel.find({});
+        for(let i = 0; i < cmts.length; ++i){
+            if(cmts[i].sender === name) cmts[i].img = image;
+            cmts[i].save();
+        }
+        const posts = await db.PostModel.find({});
+        for(let i = 0; i < posts.length; ++i){
+            if(posts[i].author === name) posts[i].img = image;
+            posts[i].save();
+        }
+        if(!USR) {
+            throw new Error('Error: cannot find user while uploading images');
+        }
+        USR.image = image;
+        USR.save();
+        return image;
+    }
 }
 
 export default Mutation;

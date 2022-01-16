@@ -11,6 +11,7 @@ const CREATECOMMENT_MUTATION = gql`
             post: $post
         }){
             id
+            img
             text
             sender
             post
@@ -25,6 +26,7 @@ const CREATEPOST_MUTATION = gql`
         $score: Int!
         $author: String!
         $store: ID!
+        $img: String
     ){
         createPost(data: {
             title: $title
@@ -32,6 +34,7 @@ const CREATEPOST_MUTATION = gql`
             score: $score
             author: $author
             store: $store
+            img: $img
         }){
             id
             author
@@ -122,6 +125,7 @@ const LOGIN_MUTATION = gql`
                     }
                 }
                 biography
+                image
             }
         }
     }
@@ -190,6 +194,15 @@ const REMOVEFAV_MUTATION = gql`
     }
 `
 
+const UPLOADUSERIMAGE_MUTATION = gql`
+    mutation uploadUserImage( 
+        $name: String!
+        $image: String!
+    ){
+        uploadUserImage(name: $name, image: $image)
+    }
+`
+
 export { SIGNUP_MUTATION, LOGIN_MUTATION, CREATEPOST_MUTATION, FINDSTORE_MUTATION, 
         CREATESTORE_MUTATION, EDITPROFILE_MUTATION, ADDFAV_MUTATION, 
-        REMOVEFAV_MUTATION, CREATECOMMENT_MUTATION, FINDSTOREBYID_MUTATION };
+        REMOVEFAV_MUTATION, CREATECOMMENT_MUTATION, FINDSTOREBYID_MUTATION, UPLOADUSERIMAGE_MUTATION };

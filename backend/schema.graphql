@@ -18,7 +18,7 @@ type Mutation {
   addFav(storeId: ID!, userId: ID!): Store!
   removeFav(storeId: ID!, userId: ID!): Store!
   editProfile(userId: ID!, biography: String!): User
-  # uploadUserImage(image: Upload!, userId: ID!): String!
+  uploadUserImage(image: String!, name: String!): String!
 }
 type LoginPayLoad {
   message: String!
@@ -57,6 +57,7 @@ input CreatePostInput {
   score: Int!
   author: String!
   store: ID!
+  img: String
 }
 
 input CreateCommentInput {
@@ -80,6 +81,7 @@ type Comment {
   id: ID!
   text: String!
   sender: String!
+  img: String!
   post: ID!
 }
 
@@ -96,6 +98,7 @@ type Post {
   comments: [Comment]!
   store: StoreInfo!
   score: Int!
+  img: String
 }
 
 type Store {
@@ -114,5 +117,5 @@ type User {
   posts: [Post]!
   favs: [Store]!
   biography: String
-  # image: String
+  image: String
 }

@@ -1,7 +1,6 @@
 import { Input, Button, Rate } from 'antd';
 import { useRef, useState } from 'react';
 import "../App.css";
-import { StarOutlined, StarTwoTone } from '@ant-design/icons';
 import status from '../hook/status';
 import { CREATEPOST_MUTATION, FINDSTORE_MUTATION, CREATESTORE_MUTATION, STORE_SUBSCRIPTION } from '../graphql/index';
 import { useMutation } from '@apollo/client';
@@ -70,7 +69,8 @@ export default function CreatePost(props){
                 body: body,
                 score: rank,
                 author: props.user.name,
-                store: store.data.findStore.id
+                store: store.data.findStore.id,
+                img: props.user.image
             }
         })
         //refetch user data

@@ -58,7 +58,6 @@ const App= () => {
   const [signUpVisible, setSignUpVisible] = useState(false);
   const [signInVisible, setSignInVisible] = useState(false);
   const [currentPage, setCurrentPage] = useState("home");
-  const [theme, setTheme] = useState("light");
 
   const [signup] = useMutation(SIGNUP_MUTATION);
   const [login] = useMutation(LOGIN_MUTATION);
@@ -83,6 +82,7 @@ const App= () => {
       });
       if(initPayload.data.login.message === 'User not found.'){
         console.log("user does not exist.");
+        localStorage.clear();
         return;
       }
       else{
@@ -91,6 +91,9 @@ const App= () => {
               setUser(initPayload.data.login.user);
               setSignedIn(true);
               setSignInVisible(false);
+          }
+          else{
+            localStorage.clear();
           }
       }
     }
@@ -219,20 +222,26 @@ const App= () => {
     setUser(payload.data.login.user);
   }
 
-
+  console.log("in app.js")
   return(
     <>
       <Wrapper> {/* className={theme === "dark"? "wrapper_dark":"wrapper_light"} */}
         <PageHeader
-          theme={theme}
           className="site-page-header-responsive"
           onBack={() => {}}
           title="NTU CSIEat 😍"
           backIcon={<MenuOutlined onClick={() => setMenuOut(!menuOut)}/>}
 
           extra={(!signedIn) ? ([
-              <Button key="2" onClick={() => { setSignUpVisible(true) }}>Sign Up</Button>,
-              <Button key="1" type="primary" onClick={() => { setSignInVisible(true) }}>
+              <Button key="2" onClick={() => { 
+                if(localStorage.getItem('name') === null) 
+                  setSignUpVisible(true) 
+                }}
+              >Sign Up</Button>,
+              <Button key="1" type="primary" onClick={() => { 
+                if(localStorage.getItem('name') === null)
+                  setSignInVisible(true) 
+                }}>
                 Sign In
               </Button>
             ]) : (
@@ -308,7 +317,7 @@ const App= () => {
       </Wrapper>
       {menuOut?
       <div className="menu" >
-        <LeftMenuModal theme={theme} page={setCurrentPage} menu={setMenuOut} />
+        <LeftMenuModal page={setCurrentPage} menu={setMenuOut} />
       </div>: <></>}
       
     </>

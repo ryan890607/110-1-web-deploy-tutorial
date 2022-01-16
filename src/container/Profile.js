@@ -1,17 +1,20 @@
 import { useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { UserOutlined } from '@ant-design/icons';
-import { EDITPROFILE_MUTATION } from '../graphql';
+import { UserOutlined, UploadOutlined } from '@ant-design/icons';
+import { EDITPROFILE_MUTATION, UPLOADUSERIMAGE_MUTATION } from '../graphql';
 import status from '../hook/status'
-import { Avatar, Descriptions, Button, Modal, Input } from 'antd';
+import { Avatar, Descriptions, Button, Modal, Input, Upload, message } from 'antd';
+const util = require("util");
 const Profile = (props) => {
     const [value, setValue] = useState('');
     const [toRefetch, setToRefetch] = useState(false);
     const { TextArea } = Input;
     const [biography, setBiography] = useState((props.user === null) ? '' : props.user.biography); 
-
+    const [file, setFile] = useState(null);
+    const [uploadUserImage] = useMutation(UPLOADUSERIMAGE_MUTATION);
+     
     if(toRefetch){
-        // props.refetch();
+        props.refetch();
         setToRefetch(false);
     }
 
@@ -39,7 +42,6 @@ const Profile = (props) => {
 
         const newData = JSON.parse(JSON.stringify(props.user));
         newData.biography = bio;
-        props.setUser(newData);
         props.refetch()
     }
     const handleSubmit = () => {
@@ -58,16 +60,17 @@ const Profile = (props) => {
     if(props.user === null){
         return <p>Please log in first</p>
     }
+    console.log("in profile.js", props.user)
     return (
         <div style={{ textAlign:"left", margin:"0px auto", width:"400px"}}>
-            <Avatar size={64} icon={<UserOutlined />}/>
+            <Avatar size={64} icon={<UserOutlined />} src={(props.user.image !== '') ? props.user.image : ''}/>
             <br></br>
             <br></br>
             <Descriptions title="Profile:" column={1}>
                 <Descriptions.Item label="User Name">{props.user.name}</Descriptions.Item>
                 <Descriptions.Item label="About Me">{biography}</Descriptions.Item>
             </Descriptions>
-            <Button onClick={() => {setVisible(true)}} >Edit Profile</Button>
+            <Button onClick={() => {setVisible(true)}} >Edit Bio</Button>
             <Modal visible={visible} onCancel={() => {setVisible(false)}} onOk={handleSubmit} closable={false}>
                 <TextArea rows={10} 
                     placeholder="Introduce yourself..." 
@@ -77,6 +80,37 @@ const Profile = (props) => {
                     value={value}>
                 </TextArea>
             </Modal>
+            <br></br>
+            <br></br>
+            <h4>Change profile photo</h4>
+            {/* <Upload name={'file'} accept={"image/*"} onChange={(event) => {setFile(event.target.file[0])}}>
+                <Button icon={<UploadOutlined/>}>Click to upload an image</Button>
+            </Upload> */}
+            <input type={'file'} icon={<UploadOutlined/>} onChange={(event) => {setFile(event.target.files[0])}}></input>
+            { (file !== null) ? 
+            <Button onClick={async () => {
+                if(file === null) return;
+                console.log(file)
+                var reader = new FileReader();
+                var baseString;
+                reader.onloadend = async function () {
+                    baseString = reader.result;
+                    console.log(baseString.toString());
+                    console.log(props.user.id)
+                    await uploadUserImage({
+                        variables: {
+                            image: baseString,
+                            name: props.user.name
+                        }
+                    })
+                    requireSubmit(props.user.biography)
+                    props.refetch()
+                }
+                reader.readAsDataURL(file)
+                setFile(null);
+            }}>
+                Submit
+            </Button> : <></>}
         </div>
     )
 }

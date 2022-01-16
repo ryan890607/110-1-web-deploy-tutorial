@@ -10,12 +10,12 @@ import Comments from './Comments';
 const { TextArea } = Input;
 
 const Post = (props) => {
-    const { data, loading, subscribeToMore } = useQuery(POST_QUERY, {
+    const { data, loading, subscribeToMore, refetch } = useQuery(POST_QUERY, {
         variables: {
             post_id: props.post_id
         }
     });
-
+    refetch();
     const [createComment] = useMutation(CREATECOMMENT_MUTATION);
     const [text, setText] = useState('');
 
@@ -94,7 +94,7 @@ const Post = (props) => {
                                 <a className='postMain'>{data.post.author+" · "+data.post.score+"⭐️"}</a>
                                 {/* <Rate disabled defaultValue={data.post.score} style={{ fontSize:"12pt" }}/> */}
                             </>}
-                    avatar={<Avatar icon={<UserOutlined />} />}
+                    avatar={<Avatar icon={<UserOutlined />} src={data.post.img}/>}
                     content={
                         <p className='postMain'>{data.post.body}</p>
                     }

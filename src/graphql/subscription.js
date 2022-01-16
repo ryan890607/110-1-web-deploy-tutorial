@@ -5,6 +5,7 @@ export const POST_SUBSCRIPTION = gql`
     ){
         post(id: $store_id){
             data{
+                img
                 title
                 body
                 id
@@ -19,6 +20,7 @@ export const COMMENT_SUBSCRIPTION = gql`
     ){
         comment(id: $post_id){
             data{
+                img
                 text
                 sender
             }
@@ -41,6 +43,7 @@ export const STORES_SUBSCRIPTION = gql`
                     title
                     body
                     comments{
+                        img
                         id
                         sender
                         text

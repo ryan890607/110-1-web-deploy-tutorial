@@ -1,25 +1,3 @@
-// import mongoose from "mongoose";
-
-// const { Schema } = mongoose;
-// mongoose.set('useCreateIndex', true);
-
-// const peopleSchema = new Schema({
-//   ssn: { type: String, required: true, unique: true },
-//   name: { type: String, required: true },
-//   severity: { type: Number, required: true },
-//   location: {
-//     name: { type: String, required: true },
-//     description: { type: String, required: false },
-//   },
-// });
-
-// const People = mongoose.model("People", peopleSchema);
-// const db = { People };
-
-// export default db;
-
-
-
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 mongoose.set('useCreateIndex', true);
@@ -38,13 +16,14 @@ const userSchema = new Schema({
     password: { type: String, required: true },
     posts: [{type: mongoose.Types.ObjectId, ref: 'Post'}],
     favs: [{type: mongoose.Types.ObjectId, ref: 'Store'}],
-    // image: { type: String, required: false }
+    image: { type: String, required: false }
 });
 
 const commentSchema = new Schema({
     text: { type: String, required: true },
     sender: { type: String, required: true },
-    post: { type: mongoose.Types.ObjectId, ref: 'Post' }
+    post: { type: mongoose.Types.ObjectId, ref: 'Post' },
+    img: { type: String, required: false }
 });
 
 
@@ -54,7 +33,8 @@ const postSchema = new Schema({
     author: { type: String, required: true},
     comments: [{ type: mongoose.Types.ObjectId, ref: 'comment' }],
     store: { type: Object, required: true},
-    score: { type: Number, required: true }
+    score: { type: Number, required: true },
+    img: { type: String, required: false }
 });
 
 const StoreModel = mongoose.model('Store', storeSchema);
