@@ -43,6 +43,7 @@ export const POSTS_QUERY = gql`
         $store_id: ID!
     ){
         posts(query: $store_id){
+            pimg
             id
             author
             title
@@ -66,6 +67,7 @@ export const POST_QUERY = gql`
     ){
         post(postId: $post_id){
             img
+            pimg
             title
             body
             author

@@ -5,6 +5,7 @@ export const POST_SUBSCRIPTION = gql`
     ){
         post(id: $store_id){
             data{
+                pimg
                 img
                 title
                 body

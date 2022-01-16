@@ -43,7 +43,7 @@ const PostBox = (props) => {
 
             onCancel={() => props.setVisible(false)}
         >
-            {(loading && data === undefined)?
+            {(loading || data === undefined)?
             <div className='why2'>
             <LoadingOutlined style={{ fontSize: "70px" }}/>
             </div> : (

@@ -34,7 +34,8 @@ const postSchema = new Schema({
     comments: [{ type: mongoose.Types.ObjectId, ref: 'comment' }],
     store: { type: Object, required: true},
     score: { type: Number, required: true },
-    img: { type: String, required: false }
+    img: { type: String, required: false },
+    pimg: { type: String, required: false }
 });
 
 const StoreModel = mongoose.model('Store', storeSchema);

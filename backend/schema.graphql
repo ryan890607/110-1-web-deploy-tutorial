@@ -57,7 +57,8 @@ input CreatePostInput {
   score: Int!
   author: String!
   store: ID!
-  img: String
+  img: String,
+  pimg: String
 }
 
 input CreateCommentInput {
@@ -99,6 +100,7 @@ type Post {
   store: StoreInfo!
   score: Int!
   img: String
+  pimg: String
 }
 
 type Store {

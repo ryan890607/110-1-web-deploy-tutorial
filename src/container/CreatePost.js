@@ -22,6 +22,7 @@ export default function CreatePost(props){
     const [restaurant, setRestaurant] = useState('');
     const [body, setBody] = useState('');
     const [rank, setRank] = useState(0);
+    const [pimg, setPimg] = useState(null);
     const { TextArea } = Input;
 
     if(toRefetch){
@@ -63,26 +64,58 @@ export default function CreatePost(props){
             });
             return;
         }
-        const payload = await createPost({
-            variables: {
-                title: title,
-                body: body,
-                score: rank,
-                author: props.user.name,
-                store: store.data.findStore.id,
-                img: props.user.image
+        if(pimg === null){
+            const payload = await createPost({
+                variables: {
+                    title: title,
+                    body: body,
+                    score: rank,
+                    author: props.user.name,
+                    store: store.data.findStore.id,
+                    img: props.user.image,
+                    pimg: ''
+                }
+            })
+            //refetch user data
+            props.refetch();
+            
+            setRank(0);
+            setRestaurant('');
+            setBody('');
+            setTitle('');
+            status.display({
+                type: "success", msg: "Submission succeeded"
+            })
+        }
+        else{
+            var reader = new FileReader();
+            var baseString;
+            reader.onloadend = async function () {
+                baseString = reader.result;
+                console.log(baseString)
+                const payload = await createPost({
+                    variables: {
+                        title: title,
+                        body: body,
+                        score: rank,
+                        author: props.user.name,
+                        store: store.data.findStore.id,
+                        img: props.user.image,
+                        pimg: baseString
+                    }
+                })
+                setRank(0);
+                setRestaurant('');
+                setBody('');
+                setTitle('');
+                status.display({
+                    type: "success", msg: "Submission succeeded"
+                })
+                props.refetch()
             }
-        })
-        //refetch user data
-        props.refetch();
-        
-        setRank(0);
-        setRestaurant('');
-        setBody('');
-        setTitle('');
-        status.display({
-            type: "success", msg: "Submission succeeded"
-        })
+            reader.readAsDataURL(pimg)
+            setPimg(null);
+        }
     }
 
     // For store creation: 
@@ -154,6 +187,8 @@ export default function CreatePost(props){
                 <p>Content:</p>
                 <TextArea rows={10} value={body} placeholder="Content" showCount maxLength={3000} onChange={(e) => { setBody(e.target.value); }} />
                 <br />
+                <p>Image:</p>
+                <input type={'file'} onChange={(event) => {setPimg(event.target.files[0])}}></input>
                 <Button type="primary" onClick={handleSubmit}>Submit</Button>
             </div>
             <CreateStoreModal 

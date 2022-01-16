@@ -20,7 +20,7 @@ const newUser = async (DB, name, password) => {
 
 const Mutation = {
     async createPost(parent, args, { db, pubsub }, info){
-        const { title, body, score, author, store, img } = args.data;
+        const { title, body, score, author, store, img, pimg } = args.data;
         const Store = await db.StoreModel.findById(store);
         const Author = await db.UserModel.findOne({ name: author }); // use author: String? or ID?
         if(!Store){
@@ -41,7 +41,8 @@ const Mutation = {
             comments: [],
             store: { id: store, name: Store.name },
             score: score,
-            img: img
+            img: img,
+            pimg: pimg
         });
 
         Store.posts.push(newPost);

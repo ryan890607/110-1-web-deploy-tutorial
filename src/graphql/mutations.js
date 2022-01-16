@@ -27,6 +27,7 @@ const CREATEPOST_MUTATION = gql`
         $author: String!
         $store: ID!
         $img: String
+        $pimg: String
     ){
         createPost(data: {
             title: $title
@@ -35,6 +36,7 @@ const CREATEPOST_MUTATION = gql`
             author: $author
             store: $store
             img: $img
+            pimg: $pimg
         }){
             id
             author

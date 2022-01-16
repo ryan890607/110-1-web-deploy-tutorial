@@ -90,13 +90,10 @@ const Profile = (props) => {
             { (file !== null) ? 
             <Button onClick={async () => {
                 if(file === null) return;
-                console.log(file)
                 var reader = new FileReader();
                 var baseString;
                 reader.onloadend = async function () {
                     baseString = reader.result;
-                    console.log(baseString.toString());
-                    console.log(props.user.id)
                     await uploadUserImage({
                         variables: {
                             image: baseString,
