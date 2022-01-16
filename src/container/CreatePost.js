@@ -93,17 +93,29 @@ export default function CreatePost(props){
             reader.onloadend = async function () {
                 baseString = reader.result;
                 console.log(baseString)
-                const payload = await createPost({
-                    variables: {
-                        title: title,
-                        body: body,
-                        score: rank,
-                        author: props.user.name,
-                        store: store.data.findStore.id,
-                        img: props.user.image,
-                        pimg: baseString
-                    }
-                })
+                try{
+                    const payload = await createPost({
+                        variables: {
+                            title: title,
+                            body: body,
+                            score: rank,
+                            author: props.user.name,
+                            store: store.data.findStore.id,
+                            img: props.user.image,
+                            pimg: baseString
+                        }
+                    })
+                }catch(e){
+                    status.display({
+                        type: 'error',
+                        msg: `Error: request entity too large`
+                    })
+                    setRank(0);
+                    setRestaurant('');
+                    setBody('');
+                    setTitle('');
+                    return;
+                }
                 setRank(0);
                 setRestaurant('');
                 setBody('');
