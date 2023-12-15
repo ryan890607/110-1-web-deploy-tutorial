@@ -31,7 +31,7 @@ Hungry, looking for recommendations, or want to share your dining experiences �
 * Demo video link：https://www.youtube.com/watch?v=1--dj9WnDDk
 
 
-* using framework：
+* packages and frameworks used：
 
 ​	**<frontend>**
 ​	react, antd, apollo, bcrypt, graphql, styled-components, subscriptions-transport-ws, web-vitals	
